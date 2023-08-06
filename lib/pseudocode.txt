@@ -1,0 +1,13 @@
+Alright changes that I think are important:
+- There should only be a list and not a seperatae screen for the wine selection
+- When opening the app the list should be empty
+- At the bottom of the lsit there should be a button to "add a wine"
+- when pressing this button, there should be a modal popped up that gives an option to type in the name (and price) of the wine
+    but maybe also to take an image or select one
+- When typing in a wine it should scrape the parker website
+    - It should save all of the presented wines
+    - then it should show the wines that are there and give the user the option to select the one that was meant
+    - If no wine was found, there is an error with textfield again, so that the user can correct the name
+    - Here there should also be a button to "search manually", so that the user can go to the corresponding parker link
+- When a wine is selected it should be added to the list so that it can be compared
+- The list should be ordered by rating, price or price/rating value
