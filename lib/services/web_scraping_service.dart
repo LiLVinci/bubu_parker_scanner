@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ffi';
+import 'package:flutter/material.dart';
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 import '../models/wine.dart';
@@ -25,10 +26,7 @@ Future<List<Wine>> scrapeRating(wineName) async {
     return String.fromCharCode(value);
   });
 
-  String cleanedContent = decodedContent
-      .replaceAll('\\n', '')
-      .replaceAll('\\t', '')
-      .replaceAll('  ', ''); // removes extra spaces
+  String cleanedContent = decodedContent.replaceAll('\\n', '').replaceAll('\\t', '').replaceAll('  ', ''); // removes extra spaces
 
   final document = parser.parse(cleanedContent);
   // #TODO: if there is no nice wine here present the winename again to edit it or redo the picture
@@ -48,13 +46,8 @@ Future<List<Wine>> scrapeRating(wineName) async {
       wineRating = wineRating.replaceAll("RP", "");
       int doubleRating = int.parse(wineRating);
 
-      print(
-          'Vintage: $wineVintage, Wine Name: $wineName, Maturity: $wineMaturity, Color: $color, Rating: $wineRating');
-      final wine = Wine(
-          name: wineName,
-          rating: doubleRating,
-          maturity: wineMaturity,
-          vintage: wineVintage);
+      print('Vintage: $wineVintage, Wine Name: $wineName, Maturity: $wineMaturity, Color: $color, Rating: $wineRating');
+      final wine = Wine(name: wineName, rating: doubleRating, maturity: wineMaturity, vintage: wineVintage);
       wines.add(wine);
     }
   }
@@ -69,24 +62,25 @@ Future<String> loadWebPage(String url) async {
   print("LAUNCHING WEBVIEW");
   flutterWebviewPlugin.launch(url);
   bool loaded = false;
-  String? content = await flutterWebviewPlugin
-      .evalJavascript('document.documentElement.innerHTML');
+  String? content = await flutterWebviewPlugin.evalJavascript('document.documentElement.innerHTML');
   // #TODO: hide the webview and display a loading screen
   // #TODO: If the login is required show the webview to log in
 
   while (!loaded) {
-    if (content != null && content.contains('search-page')) {
+    if (content != null && content.contains('site-wrappsdfsdfsder')) {
       loaded = true;
-      content = await flutterWebviewPlugin.evalJavascript(
-          "document.querySelector('.reactive-table-wrapper').innerHTML");
+      print("POINTA");
+      content = await flutterWebviewPlugin.evalJavascript("document.querySelector('.reactive-table-wrapper').innerHTML");
+      debugPrint(content);
       completer.complete(content);
       print("LOOP FINISHED");
     } else {
       await Future.delayed(Duration(seconds: 1));
-      content = await flutterWebviewPlugin
-          .evalJavascript('document.documentElement.innerHTML');
+      // content = await flutterWebviewPlugin.evalJavascript('document.documentElement.innerHTML');
+      content = await flutterWebviewPlugin.evalJavascript('document.documentElement.innerHTML');
 
       print("STARTING LOOP AGAIN");
+      debugPrint(content);
     }
   }
   flutterWebviewPlugin.close();

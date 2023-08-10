@@ -35,7 +35,6 @@ dependencies:
   image_picker: ^0.8.4+4
   html: ^0.15.0
   cupertino_icons: ^1.0.2
-  flutter_pdf: ^0.0.1
   google_mlkit_text_recognition: ^0.6.0
   webview_flutter: ^4.2.0
   flutter_webview_plugin: ^0.4.0

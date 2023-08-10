@@ -15,75 +15,69 @@ class _WineMenuScannerState extends State<WineMenuScanner> {
   final picker = ImagePicker();
   File? _image;
   List<Wine>? _wines;
-  String? _wineName;  // Add this line
-
+  String? _wineName; // Add this line
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Wine Menu Scanner'),
-      ),
-      body: Column(
-        children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _image == null
-                    ? Text('No image selected.')
-                    : Image.file(_image!),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: getImageFromCamera,
-                      child: Text('Take a picture'),
-                    ),
-                    SizedBox(width: 20),
-                    ElevatedButton(
-                      onPressed: getImageFromGallery,
-                      child: Text('Choose from gallery'),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  // onPressed: () {
-                  //   scrapeRatings(["2020 Alvaro Palacios, 'Finca Dofi'"]);
-                  // },
-                  onPressed: processImage,
-                  child: Text('Process image'),
-                ),
-              ],
+        appBar: AppBar(
+          title: Text('Wine Menu Scanner'),
+        ),
+        body: Column(
+          children: [
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _image == null ? Text('No image selected.') : Image.file(_image!),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: getImageFromCamera,
+                        child: Text('Take a picture'),
+                      ),
+                      SizedBox(width: 20),
+                      ElevatedButton(
+                        onPressed: getImageFromGallery,
+                        child: Text('Choose from gallery'),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    // onPressed: () {
+                    //   scrapeRatings(["2020 Alvaro Palacios, 'Finca Dofi'"]);
+                    // },
+                    onPressed: processImage,
+                    child: Text('Process image'),
+                  ),
+                ],
+              ),
             ),
-          ),
-          TextField(
-            onChanged: (value) => _wineName = value,
-            decoration: InputDecoration(
-              labelText: 'Wine Name',
+            TextField(
+              onChanged: (value) => _wineName = value,
+              decoration: InputDecoration(
+                labelText: 'Wine Name',
+              ),
             ),
-          ),
-          ElevatedButton(
-            onPressed: _wineName != null && _wineName!.isNotEmpty
-                ? () {
-              final wine = scrapeRating(_wineName!);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => WineListScreen(),
-                ),
-              );
-            }
-                : null,
-            child: Text('Search Wine'),
-          ),
-        ],
-      )
-
-
-    );
+            ElevatedButton(
+                onPressed: () {
+                  if (_wineName != null) {
+                    print("Button pressed");
+                    final wine = scrapeRating(_wineName!);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WineListScreen(),
+                      ),
+                    );
+                  }
+                },
+                child: Text('Search Wine')),
+          ],
+        ));
   }
 
   Future<void> getImageFromCamera() async {
@@ -126,10 +120,6 @@ class _WineMenuScannerState extends State<WineMenuScanner> {
     } else {
       print("NO WINES FOUND");
     }
-
-
-
-
   }
 
   List<String> extractWineNames(String text) {
@@ -138,8 +128,7 @@ class _WineMenuScannerState extends State<WineMenuScanner> {
 
     for (final line in lines) {
       // #TODO: HEIR SOLLTE MAN IRGENDWIE TESTEN OB ES EIN WEIN ODER NUR UNNÖTIGER TEXZT IST
-        wineNames.add(line.trim());
-
+      wineNames.add(line.trim());
     }
 
     return wineNames;
